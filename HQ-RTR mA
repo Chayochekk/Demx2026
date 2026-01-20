@@ -1,8 +1,6 @@
 
 ==========HQ-RTR=======
 
-root/toor
-
 -------имя хоста---------
 hostnamectl hostname hq-rtr.au-team.irpo
 exec bash
