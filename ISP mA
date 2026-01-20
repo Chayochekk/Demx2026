@@ -1,0 +1,50 @@
+
+==========ISP==========
+
+root/toor
+
+-------имя хоста---------
+hostnamectl hostname ISP
+exec bash
+-------настройка ВНЕШНЕГО интерфейса---------
+	
+cat /etc/net/ifaces/enp7s1/options
+
+-------настройка ВНУТРЕННИХ интерфейсов---------
+
+mkdir -p /etc/net/ifaces/enp7s{2,3}
+
+echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{2,3}/optionse
+
+echo '172.16.1.1/28' > /etc/net/ifaces/enp7s2/ipv4address
+echo '172.16.2.1/28' > /etc/net/ifaces/enp7s3/ipv4address
+
+
+-------настройка NAT---------
+
+apt-get update && apt-get install nftables -y
+
++++
+	nftables.nft
+
+cat << EOF > /etc/nftables/nftables.nft
+#!/usr/sbin/nft -f
+flush ruleset
+table ip nat {
+ chain postrouting {
+ type nat hook postrouting priority srcnat;
+ oifname "enp7s1"  masquerade
+ }
+}
+EOF
+
++++
+cat /etc/nftables/nftables.nft 
+
+systemctl enable --now nftables
+
+-------включение маршрутизации---------
+
+sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
+systemctl restart network
+sysctl net.ipv4.ip_forward
