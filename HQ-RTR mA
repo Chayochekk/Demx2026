@@ -1,0 +1,151 @@
+
+==========HQ-RTR=======
+
+root/toor
+
+-------имя хоста---------
+hostnamectl hostname hq-rtr.au-team.irpo
+exec bash
+
++++++++++++NETWORK++++++++++++++++++++++++
+
+mkdir -p /etc/net/ifaces/{enp7s{1,2},vlan{100,200,999},gre1}
+echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{1,2}/options
+
+
+-------to ISP------
+echo '172.16.1.2/28' > /etc/net/ifaces/enp7s1/ipv4address
+echo 'default via 172.16.1.1' > /etc/net/ifaces/enp7s1/ipv4route
+echo 'nameserver 8.8.8.8' > /etc/net/ifaces/enp7s1/resolv.conf
+
+--------настройка VLAN-----------
+
+echo $'100\n200\n999' | xargs -i bash -c 'echo -e "TYPE=vlan\nHOST=enp7s2\nVID={}" > /etc/net/ifaces/vlan{}/options'
+
+cat /etc/net/ifaces/vlan999/options 
+
+echo '192.168.100.1/27' > /etc/net/ifaces/vlan100/ipv4address
+echo '192.168.200.1/28' > /etc/net/ifaces/vlan200/ipv4address
+echo '192.168.99.1/29' > /etc/net/ifaces/vlan999/ipv4address
+-------включение маршрутизации---------
+
+sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
+
+-------GRE-----------------------------
+
++++
+cat << EOF > /etc/net/ifaces/gre1/options
+TYPE=iptun
+TUNTYPE=gre
+TUNLOCAL=172.16.1.2
+TUNREMOTE=172.16.2.2
+TUNOPTIONS='ttl 64'
+
+EOF
++++
+cat /etc/net/ifaces/gre1/options
+
+echo "10.10.10.1/30" > /etc/net/ifaces/gre1/ipv4address
+
+systemctl restart network
+
+ip -br -c a
+ping 10.10.10.2 -c 3
+ping zz.ru -c 2
+
+-------установка необходимого ПО-------
+
+apt-get update && apt-get install sudo tzdata frr dnsmasq nftables -y
+
+--------смена DNS-----------
+rm -f /etc/net/ifaces/enp7s1/resolv.conf
+echo $'search au-team.irpo\nnameserver 192.168.100.2' > /etc/net/ifaces/vlan100/resolv.conf
+
+--------NAT-----------------
+
+-------nftables.nft
++++
+cat << EOF > /etc/nftables/nftables.nft
+#!/usr/sbin/nft -f
+flush ruleset
+table ip nat {
+ chain postrouting {
+ type nat hook postrouting priority srcnat
+ oifname "enp7s1" masquerade
+ }
+}
+EOF
+
++++
+
+systemctl enable --now nftables
+
+--------TIMEZONE----------
+timedatectl set-timezone Europe/Moscow
+
+-------настройка net_admin-------------
+useradd net_admin
+echo "net_admin:P@ssw0rd" | chpasswd
+usermod -aG wheel net_admin
+echo "WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/net_admin
+su -l net_admin
+sudo id
+
+--------OSPF--------------
+sed -i 's/ospfd=no/ospfd=yes/' /etc/frr/daemons ; grep ospf /etc/frr/daemons
+
++++
+cat <<'EOF' > /etc/frr/frr.conf
+interface gre
+ no ip ospf passive
+exit
+!
+interface gre1
+ ip ospf area 0
+ ip ospf authentication
+ ip ospf authentication-key P@ssw0rd
+ no ip ospf passive
+exit
+!
+interface vlan100
+ ip ospf area 0
+exit
+!
+interface vlan200
+ ip ospf area 0
+exit
+!
+interface vlan999
+ ip ospf area 0
+exit
+!
+router ospf
+ passive-interface default
+exit
+
+EOF
++++
+
+
+--------DHCP------------
+
+sed -i 's/AUTO_LOCAL_RESOLVER=yes/AUTO_LOCAL_RESOLVER=no/' /etc/sysconfig/dnsmasq ; grep AUTO_LOCAL_RESOLVER /etc/sysconfig/dnsmasq
+
++++
+
+cat <<'EOF' > /etc/dnsmasq.conf
+port=0
+interface=vlan200
+listen-address=192.168.200.1
+dhcp-authoritative
+dhcp-range=interface:vlan200,192.168.200.2,192.168.200.2,255.255.255.240,6h
+dhcp-option=3,192.168.200.1
+dhcp-option=6,192.168.100.2
+leasefile-ro
+EOF
+
+systemctl enable --now frr dnsmasq ; ss -lun | grep 67
+
+systemctl restart network
+cat /etc/resolv.conf
+ip r | grep ospf
