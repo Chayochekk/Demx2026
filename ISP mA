@@ -25,7 +25,6 @@ table ip nat {
 }
 EOF
 
-
 systemctl enable --now nftables
 
 -------включение маршрутизации---------
