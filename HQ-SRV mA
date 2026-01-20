@@ -3,8 +3,6 @@
 
 СТАВИМ ТЕГ VLAN 100 НА ИНТЕРФЕЙС 
 
-root/toor
-
 -------имя хоста/NTP---------
 hostnamectl hostname HQ-SRV.au-team.irpo
 	exec bash
