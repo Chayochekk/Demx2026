@@ -19,7 +19,7 @@ echo 'default via 172.16.2.1' > /etc/net/ifaces/enp7s1/ipv4route
 echo 'nameserver 8.8.8.8' > /etc/net/ifaces/enp7s1/resolv.conf
 
 -------to BR-SRV---
-echo '192.168.1.1/28' > /etc/net/ifaces/enp7s2/ipv4address
+echo '192.168.3.1/28' > /etc/net/ifaces/enp7s2/ipv4address
 
 -------включение маршрутизации---------
 
