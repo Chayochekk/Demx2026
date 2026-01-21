@@ -89,8 +89,8 @@ $TTL  1D
 hq-rtr  IN   A    192.168.100.1
 hq-srv  IN   A    192.168.100.2
 hq-cli  IN   A    192.168.200.2
-br-rtr  IN   A    192.168.1.1
-br-srv  IN   A    192.168.1.2
+br-rtr  IN   A    192.168.3.1
+br-srv  IN   A    192.168.3.2
 docker  IN   A    172.16.1.1
 web     IN   A    172.16.2.1
 
