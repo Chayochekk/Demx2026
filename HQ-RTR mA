@@ -41,7 +41,6 @@ TUNOPTIONS='ttl 64'
 
 EOF
 +++
-cat /etc/net/ifaces/gre1/options
 
 echo "10.10.10.1/30" > /etc/net/ifaces/gre1/ipv4address
 
