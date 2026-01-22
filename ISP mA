@@ -9,7 +9,7 @@ echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{2,3}/optionse
 
 echo '172.16.1.1/28' > /etc/net/ifaces/enp7s2/ipv4address && echo '172.16.2.1/28' > /etc/net/ifaces/enp7s3/ipv4address
 
-
+echo 'nameserver 8.8.8.8' > /etc/net/ifaces/enp7s2/resolv.conf
 -------настройка NAT---------
 
 apt-get update && apt-get install nftables -y
