@@ -5,7 +5,7 @@ exec bash
 
 mkdir -p /etc/net/ifaces/enp7s{2,3}
 
-echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{2,3}/optionse
+echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{2,3}/options
 
 echo '172.16.1.1/28' > /etc/net/ifaces/enp7s2/ipv4address && echo '172.16.2.1/28' > /etc/net/ifaces/enp7s3/ipv4address
 
