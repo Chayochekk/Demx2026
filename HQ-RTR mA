@@ -12,9 +12,7 @@ echo 'TYPE=eth' | tee /etc/net/ifaces/enp7s{1,2}/options
 
 
 -------to ISP------
-echo '172.16.1.2/28' > /etc/net/ifaces/enp7s1/ipv4address
-echo 'default via 172.16.1.1' > /etc/net/ifaces/enp7s1/ipv4route
-echo 'nameserver 8.8.8.8' > /etc/net/ifaces/enp7s1/resolv.conf
+echo '172.16.1.2/28' > /etc/net/ifaces/enp7s1/ipv4address && echo 'default via 172.16.1.1' > /etc/net/ifaces/enp7s1/ipv4route && echo 'nameserver 8.8.8.8' > /etc/net/ifaces/enp7s1/resolv.conf
 
 --------настройка VLAN-----------
 
@@ -22,9 +20,7 @@ echo $'100\n200\n999' | xargs -i bash -c 'echo -e "TYPE=vlan\nHOST=enp7s2\nVID={
 
 cat /etc/net/ifaces/vlan999/options 
 
-echo '192.168.100.1/27' > /etc/net/ifaces/vlan100/ipv4address
-echo '192.168.200.1/28' > /etc/net/ifaces/vlan200/ipv4address
-echo '192.168.99.1/29' > /etc/net/ifaces/vlan999/ipv4address
+echo '192.168.100.1/27' > /etc/net/ifaces/vlan100/ipv4address && echo '192.168.200.1/28' > /etc/net/ifaces/vlan200/ipv4address && echo '192.168.99.1/29' > /etc/net/ifaces/vlan999/ipv4address
 -------включение маршрутизации---------
 
 sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
