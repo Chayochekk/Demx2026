@@ -1,8 +1,3 @@
- BR-SRV
- 1)Настройте контроллер домена Samba DC на сервере BR-SRV
- 2)Сконфигурируйте ansible на сервере BR-SRV
- 3)Разверните веб приложение в docker на сервере BR-SRV
- 
 ==========Domain================== 
 ---------SambaDC------------
 echo "nameserver 192.168.1.10" >> /etc/net/ifaces/enp7s1/resolv.conf; systemctl restart network; cat /etc/resolv.conf
