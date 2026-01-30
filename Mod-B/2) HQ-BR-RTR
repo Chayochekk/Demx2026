@@ -1,1 +1,25 @@
+==========HQ-RTR=========
 
+
+nft add chain nat prerouting { type nat hook prerouting priority dstnat \; }
+nft add rule nat prerouting iif "enp7s1" tcp dport 2026 dnat to 192.168.1.10
+nft add rule nat prerouting iif "enp7s1" tcp dport 8080 dnat to 192.168.1.10:80
+
+
+nft list ruleset
+nft list ruleset > /etc/nftables/nftables.nft
+systemctl restart nftables
+nft list ruleset
+
+==========BR-RTR=========
+
+
+nft add chain nat prerouting { type nat hook prerouting priority dstnat \; }
+nft add rule nat prerouting iif "enp7s1" tcp dport { 8080, 2026 } dnat to 192.168.3.10
+
+nft list ruleset
+nft list ruleset > /etc/nftables/nftables.nft
+systemctl restart nftables
+nft list ruleset
+
+sed -i 's/pool pool.ntp.org iburst/server 172.16.1.1 iburst/' /etc/chrony.conf && systemctl restart chronyd && chronyc sources
