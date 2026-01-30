@@ -1,1 +1,44 @@
+==========BR-SRV==========
 
+root/toor
+
+-------имя хоста/NTP---------
+hostnamectl hostname BR-SRV.au-team.irpo
+	exec bash
+timedatectl set-timezone Europe/Moscow
+
+-------настройка интерфейсов-------------
+
+echo 'TYPE=eth' > /etc/net/ifaces/enp7s1/options
+echo '192.168.3.2/26' > /etc/net/ifaces/enp7s1/ipv4address
+echo 'default via 192.168.1.1' > /etc/net/ifaces/enp7s1/ipv4route
+echo $'search au-team.irpo\nnameserver 192.168.100.2' > /etc/net/ifaces/enp7s1/resolv.conf
+systemctl restart network
+ping hq-srv -c 3
+
+-------настройка sshuser-------------
+
+useradd -u 2026 sshuser
+echo "sshuser:P@ssw0rd" | chpasswd
+usermod -aG wheel sshuser
+echo "WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/sshuser
+su -l sshuser
+sudo id
+
+--------настройка SSH----------------
+
+echo "Authorized access only" > /etc/openssh/banner
+echo -e "Port 2026\nMaxAuthTries 2\nAllowUsers sshuser\nBanner /etc/openssh/banner\n" >> /etc/openssh/sshd_config
+systemctl restart sshd
+ss -ltnp | grep sshd 
+
+
+==========HQ-CLI==========
+
+СТАВИМ ТЕГ VLAN 200 НА ИНТЕРФЕЙС 
+
+-------имя хоста/NTP---------
+hostnamectl hostname HQ-CLI.au-team.irpo
+	exec bash
+timedatectl set-timezone Europe/Moscow
+ip -br -c a
