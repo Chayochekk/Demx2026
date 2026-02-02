@@ -8,6 +8,10 @@ parted /dev/sdb
 	set 1 raid on
 	print
 	select /dev/sdc
+	mklabel msdos
+	mkpart primary 1MiB 100%
+	set 1 raid on
+	print
 
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1
 mdadm --detail --scan >> /etc/mdadm.conf
@@ -27,7 +31,7 @@ cp /etc/exports /etc/exports.back
 echo "/raid/nfs 192.168.2.0/27(rw,no_subtree_check,no_root_squash)" >> /etc/exports
 systemctl enable --now nfs-server
 # exportfs -vra
-===========HQ-CLI
+===========HQ-CLI=======================
 mkdir /mnt/nfs
 chmod -R 777 /mnt/nfs
 showmount -e hq-srv
