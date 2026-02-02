@@ -40,23 +40,21 @@ for i in {1..5}; do samba-tool user add hquser$i P@ssw0rd; done
 for i in {1..5}; do samba-tool group addmembers hq hquser$i; done
 
 samba-tool group listmembers hq
-===========HQ-CLI
-вводим HQ-CLI в домен
-
-на HQ-RTR меняем параметры DNS на dnsmasq
-
+===========HQ-RTR==============
 sed -i 's/192.168.1.10/192.168.3.10/' /etc/dnsmasq.conf;  systemctl restart dnsmasq
 cat /etc/dnsmasq.conf
 
+===========HQ-CLI==============
 на HQ-CLI  перезагружаем сеть, проверяем DNS
-вводим в домен
+вводим в домен Active directory
+После входа перезагружаем клиента
 
 control libnss-role
 roleadd hq wheel
 
 echo "WHEEL_USERS ALL=(ALL:ALL) /usr/bin/cat, /usr/bin/grep, /usr/bin/id" >> /etc/sudoers
 tail /etc/sudoers
-заходим доменным пользователем, выполняем sudo id 
+заходим доменным пользователем(hquser(1-5)), выполняем sudo id 
 
 ==========Ansible================== 
 
