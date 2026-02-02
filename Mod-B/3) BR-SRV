@@ -88,18 +88,54 @@ cat /mnt/docker/readme.txt
 docker load < /mnt/docker/site_latest.tar
 docker load < /mnt/docker/mariadb_latest.tar
 docker image ls
-<<<<docker-compose-file>>>>
-
-docker compose config
+----------------------------------------------
+cat << EOF > docker-compose.yml
+services:
+  database:
+    container_name: db
+    image: mariadb:latest
+    restart: always
+    ports: 
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: testdb
+      MARIADB_USER: test
+      MARIADB_PASSWORD: P@ssw0rd
+      MARIADB_ROOT_PASSWORD: P@ssw0rd
+    volumes:
+      - db_data:/var/lib/mysql
+      
+  app:
+    container_name: testapp
+    image: site:latest
+    restart: always
+    ports: 
+      - "8080:8000"
+    environment: 
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: P@ssw0rd
+      DB_TYPE: maria
+    depends_on: 
+      - database
+volumes:
+  db_data:
+EOF
+--------------------------------------------------
+docker compose config - проверить cfg
 docker compose up -d 
 docker ps
 ss -ltnp4 | grep 8080
 
-переходим на HQ-CLI, заходим по docker.au-team.irpo и по 192.168.3.10:8080
+===================HQ-CLI============================
+заходим по 192.168.3.10:8080
 создаем запись
+
+===================BR-SRV========================
 docker rm -f $(docker ps -qa)
 снова запускаем docker compose
-
 
 ========NTP========
 sed -i 's/pool pool.ntp.org iburst/server 172.16.1.1 iburst/' /etc/chrony.conf && systemctl restart chronyd && chronyc sources
