@@ -1,8 +1,5 @@
-==========Domain================== 
 ---------SambaDC------------
 echo "nameserver 192.168.1.10" >> /etc/net/ifaces/enp7s1/resolv.conf; systemctl restart network; cat /etc/resolv.conf
-
-ping ya.ru -c 2
  
 apt-get update && apt-get install -y task-samba-dc
 rm -f /etc/samba/smb.conf
@@ -47,7 +44,7 @@ cat /etc/dnsmasq.conf
 
 ===========HQ-CLI==============
 на HQ-CLI  перезагружаем сеть, проверяем DNS
-вводим в домен Active directory
+вводим в домен
 После входа перезагружаем клиента
 
 Дальше все от root
@@ -73,9 +70,7 @@ BR-RTR ansible_user=net_admin ansible_password=P@ssw0rd
 HQ-CLI ansible_user=user ansible_password=resu
 EOF
 
-проверить состояние службы SSH на хостах
-
-ansible all -m ping
+ansible all -m ping - проверить состояние службы SSH на хостах
 
 ==========Docker================== 
 
@@ -83,50 +78,16 @@ apt-get install docker-engine docker-compose-v2 -y
 systemctl enable --now docker.service
 mount -o loop /dev/sr0 /mnt/ -v
 ls -l /mnt/docker/
-cat /mnt/docker/readme.txt
 
 docker load < /mnt/docker/site_latest.tar
 docker load < /mnt/docker/mariadb_latest.tar
 docker image ls
-----------------------------------------------
-cat << EOF > docker-compose.yml
-services:
-  database:
-    container_name: db
-    image: mariadb:latest
-    restart: always
-    ports: 
-      - "3306:3306"
-    environment:
-      MARIADB_DATABASE: testdb
-      MARIADB_USER: test
-      MARIADB_PASSWORD: P@ssw0rd
-      MARIADB_ROOT_PASSWORD: P@ssw0rd
-    volumes:
-      - db_data:/var/lib/mysql
-      
-  app:
-    container_name: testapp
-    image: site:latest
-    restart: always
-    ports: 
-      - "8080:8000"
-    environment: 
-      DB_HOST: database
-      DB_PORT: 3306
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: P@ssw0rd
-      DB_TYPE: maria
-    depends_on: 
-      - database
-volumes:
-  db_data:
-EOF
---------------------------------------------------
+
+Пишем конфик для docker compose 
+
 docker compose config - проверить cfg
-docker compose up -d 
-docker ps
+docker compose up -d - поднять в фоне
+docker ps - проверить что успешно поднят
 ss -ltnp4 | grep 8080
 
 ===================HQ-CLI============================
