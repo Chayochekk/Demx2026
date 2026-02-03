@@ -83,7 +83,7 @@ docker load < /mnt/docker/site_latest.tar
 docker load < /mnt/docker/mariadb_latest.tar
 docker image ls
 
-Пишем конфик для docker compose 
+Пишем cfg для docker compose 
 
 docker compose config - проверить cfg
 docker compose up -d - поднять в фоне
