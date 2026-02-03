@@ -1,6 +1,9 @@
 sed -i 's/pool pool.ntp.org iburst/server 172.16.1.1 iburst/' /etc/chrony.conf && systemctl restart chronyd && chronyc sources
+===========HQ-CLI==================
+apt-get update && apt-get install yandex-browser-stable -y
 
-==========RAID================== 
+===========HQ-SRV====================
+------------RAID---------------------
 lsblk
 parted /dev/sdb
 	mklabel msdos
@@ -75,7 +78,5 @@ systemctl enable --now httpd2.service
 
 web.au-team.irpo, аутентификация WEB/P@ssw0rd
 
-
-apt-get update && apt-get install yandex-browser-stable -y
 
 echo "server 172.16.1.1 iburst" >> /etc/chrony.conf && systemctl restart chronyd
