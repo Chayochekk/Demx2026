@@ -74,32 +74,3 @@ echo -e "ForwardToSyslog=yes\nMaxLevelSyslog=warning" >> /etc/systemd/journald.c
 echo "*.warn @192.168.1.10" > /etc/rsyslog.d/10_to_server.conf
 systemctl daemon-reload
 systemctl enable --now rsyslog 
-
----------NFTables-----------
-
-nft add table filter
-
-nft add chain filter INPUT '{ type filter hook input priority 0; policy drop ; }'
-
-
-nft add rule filter INPUT iif "lo" accept
-nft add rule filter INPUT ct state established,related accept
-nft add rule filter INPUT iif enp7s1 icmp type { echo-request, echo-reply } accept
-nft add rule filter INPUT iif enp7s1 udp dport { 53, 123 } accept
-nft add rule filter INPUT iif enp7s1 tcp dport { 80, 443, 2026, 8080, 53  } accept
-
-nft add chain filter FORWARD '{ type filter hook forward priority 0; policy drop ; }'
-nft add rule filter FORWARD ct state established,related accept
-nft add rule filter FORWARD iif enp7s2 oif enp7s1 accept
-nft add rule filter FORWARD iif enp7s2 oif tun0 accept
-nft add rule filter FORWARD iif enp7s1 oif enp7s2 ct state established,related accept
-		
-nft add chain filter OUTPUT '{ type filter hook output priority 0; policy accept ; }'
-		
-nft list ruleset
-nft list ruleset > /etc/nftables/nftables.nft
-systemctl restart nftables
-nft list ruleset
-		
----на обоих-----
-
