@@ -1,1 +1,163 @@
+---------Настройта принт-сервер cups------------ 
 
+apt-get update && apt-get install cups cups-pdf -y
+vim /etc/cups/cupsd.conf 
+<Location /> 
+<Location /admin> 
+<Location /admin/conf>
+	Allow all
+# Only listen for connections from the local machine.
+Listen 192.168.1.10:631
+  
+  systemctl enable --now cups
+  ss -ltnp4 | grep 631
+  
+---на HQ-CLI
+https://hq-srv:631
+
+---------Сервер сбора логов------------ 
+--rsyslog
+
+на всех клиентах включить в /etc/rsyslog.d/00_common.conf
+
+	module(load="imjournal")
+	module(load="imuxsock")
+
+apt-get install rsyslog-classic rsyslog-server-listen -y
+
+cat << "EOF" > /etc/rsyslog.d/91_template.conf
+$template DynFile,"/opt/%HOSTNAME%/%PROGRAMNAME%.log" 
+*.*       ?DynFile 
+&         stop
+EOF
+
+systemctl restart rsyslogd
+ss -lunp4 | grep 514
+
+на сервере выключить в /etc/rsyslog.d/10_classic.conf 
+	module(load="imuxsock") ---> #
+test  всех хостах
+
+logger -p local2.warning "Syslog test message" 
+
+---logrotate
+
+
+
+apt-get install logrotate -y
++++
+cat << EOF > /etc/logrotate.d/rsyslog
+/opt/**/*.log
+{ 
+weekly
+missingok
+notifempty 
+compress 
+minsize 10M
+} 
+EOF
++++
+
+   проверка
+logrotate -d /etc/logrotate.d/rsyslog
+
+
+export EDITOR=/usr/bin/vim
+crontab -e 
+	--->
+0 0 * * 0 root /usr/sbin/logrotate /etc/logrotate.d/rsyslog
+
+---------Мониторинг  устройств------------ 
+
+apt-get install prometheus grafana  prometheus-node_exporter -y
+
+/etc/prometheus/prometheus.yml, в - job_name: 'prometheus'
+в targets : 
+    static_configs: 
+      - targets: ['localhost:9090'] 
+	  
+	добавить
+	
+ - job_name: hq-srv
+    static_configs:
+      - targets: ['192.168.1.10:9100']
+  - job_name: br-srv
+    static_configs:
+      - targets: ['192.168.3.10:9100']
+
+
+systemctl enable --now prometheus-node_exporter 
+systemctl enable --now prometheus
+systemctl enable --now grafana-server 
+systemctl status prometheus-node_exporter prometheus grafana-server 
+
+dashboard 1860
+
+---------fail2ban для защиты ssh------------ 
+
+apt-get install fail2ban python3-module-systemd -y
+
+
+sed -i 's/before = paths-altlinux.conf/before = paths-altlinux-systemd.conf/' /etc/fail2ban/jail.conf
+
++++
+cat << EOF > /etc/fail2ban/jail.d/sshd.conf
+[sshd]
+enabled = true
+port = 2026
+filter = sshd
+backend = systemd
+maxretry = 3
+bantime = 1m
+EOF
++++
+
+systemctl enable --now fail2ban
+fail2ban-client status sshd
+
+---------Резервное копирование/CyberBackup------------ 
+---HQ-SRV
+vim /etc/fstab
+
+apt-get update && apt-get install kernel-source-6.1 kernel-headers-modules-un-def gcc make kmod-sign -y
+update-kernel
+reboot
+uname -r
+создать пользователя irpoadmin/P@ssw0rd
+
+
+ls -l /lib/modules/6.1.159-un-def-alt1/build
+mount /dev/sr0 /mnt
+bash /mnt/cyberbackup_17.4.36200.x86_64
+[*] Management Server          -
+[*] Agent for Linux            0
+[ ] Bootable Media Builder     a
+[ ] Agent for CommuniGate Pro  a
+[*] Agent for MySQL/MariaDB    a  
+
+
+ss -ltnp | grep 9877
+
+---HQ-CLI
+apt-get update && apt-get install kernel-source-6.1 kernel-headers-modules-un-def gcc make kmod-sign -y
+update-kernel
+reboot
+uname -r
+
+mount /dev/sr0 /mnt
+bash /mnt/cyberbackup_17.4.36200.x86_64
+[ ] Management Server          -
+[*] Agent for Linux            0
+[ ] Bootable Media Builder     a
+ -----
+[*] Storage Node               a   
+
+подлючаемся к серверу по IP
+
+В графике:
+1 Создать организацию irpo 
+2 Создать хранилице на узле хранения
+3 Создать планы хранения
+
+control mysqld server
+systemctl restart mysqld
