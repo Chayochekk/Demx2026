@@ -38,7 +38,7 @@ cat > /etc/openvpn/keys/static.key
 chmod og-rw /etc/openvpn/keys/static.key
 
 +++
-cat  << EOF > /etc/openvpn/client/tun0.conf
+vim /etc/openvpn/client/tun0.conf - вставляем ключ
 remote 172.16.1.10
 dev tun0
     cipher AES-256-CBC
