@@ -1,1 +1,74 @@
+---------импорт пользователей------------
 
+mount -o loop /dev/sr0 /mnt/ -v
+ls -l /mnt/
+iconv -f UTF-8 -t UTF-8//IGNORE /mnt/Users.csv > /root/users_fix.csv
+cat << "EOF" > import.sh
+#!/bin/bash 
+#
+while IFS=';' read -r  name fam role phone ou street zip city country pass; do 
+    username="$fam"."${name:0:1}" 
+    samba-tool user create "${username,,}" "P@ssw0rd1" --given-name="$fam" --
+surname="$name" --job-title="$role" --telephone-number="$phone" 
+    [[ -n "$ou" ]] && samba-tool ou create "OU=$ou" 2>/dev/null 
+    [[ -n "$ou" ]] && samba-tool user move "${username,,}" "OU=$ou" 2>/dev/null 
+done < users_fix.csv 
+EOF
+
+bash import.sh
+samba-tool user list
+samba-tool user show ball.y
+
+---------Логирование при помощи rsyslog------------
+
+apt-get install rsyslog -y
+grep 'Syslog' /etc/systemd/journald.conf 
+
+vim /etc/rsyslog.d/00_common.conf
+ раскомментировать
+  module(load="imjournal") # ...
+  module(load="imuxsock")  # ...
+
+
+echo -e "ForwardToSyslog=yes\nMaxLevelSyslog=warning" >> /etc/systemd/journald.conf
+echo "*.warn @192.168.1.10" > /etc/rsyslog.d/10_to_server.conf
+systemctl enable --now rsyslog 
+
+---------Мониторинг устройств------------
+
+apt-get install prometheus-node_exporter -y
+systemctl enable --now prometheus-node_exporter
+ss -ltnp | grep 9100
+
+---------Механизм инвентаризации машин------------
+
+cp /mnt/playbook/get_hostname_address.yml /etc/ansible/
+cd /etc/ansible/
+
+mkdir PC-INFO
++++	
+cat << "EOF" > 	get_hostname_address.yml
+---
+- name: "Get data from hosts"
+  gather_facts: true
+  hosts:
+    - HQ-SRV
+    - HQ-CLI
+  tasks:
+    - name: "Creating a data file" 
+      copy:
+        dest: /etc/ansible/PC-INFO/{{ ansible_hostname }}.yml
+        content: |
+          Hostname: {{ ansible_hostname }}
+          IP_Address: {{ ansible_default_ipv4.address }}
+      delegate_to: localhost
+EOF
++++
+ansible-playbook --syntax-check get_hostname_address.yml
+ansible-playbook get_hostname_address.yml
+cat PC-INFO/hq-cli.yml
+
+---DNS для HQ-SRV
+
+samba-tool dns add br-srv.au-team.irpo au-team.irpo mon CNAME hq-srv.au-team.irpo -U Administrator
+samba-tool dns query br-srv.au-team.irpo au-team.irpo mon CNAME -U administrator
