@@ -1,1 +1,104 @@
+---------OpenVPN------------
+---на HQ-RTR
+apt-get update && apt-get install openvpn -y
+
+openvpn --genkey secret /etc/openvpn/keys/static.key
+chmod og-rw /etc/openvpn/keys/static.key
+
+# scp /etc/openvpn/keys/static.key net_admin@172.16.2.10:~ 
+
+как вариант
+
+cat /etc/openvpn/keys/static.key
+
++++
+cat << EOF > /etc/openvpn/server/tun0.conf
+dev tun0
+    cipher AES-256-CBC
+    auth-nocache
+    ifconfig 192.168.5.1 192.168.5.2
+    secret /etc/openvpn/keys/static.key
+EOF
++++
+systemctl enable openvpn-server@tun0
+
+rm -rf /etc/net/ifaces/gre1/ && reboot
+
+sed -i 's/interface gre1/interface tun0/' /etc/frr/frr.conf ; grep tun0 -A6 /etc/frr/frr.conf
+systemctl restart frr
+
+ip -br -c a
+ip r
+
+--------------BR-RTR-----------------
+
+apt-get update && apt-get install openvpn -y
+
+cat > /etc/openvpn/keys/static.key
+chmod og-rw /etc/openvpn/keys/static.key
+
++++
+cat  << EOF > /etc/openvpn/client/tun0.conf
+remote 172.16.1.10
+dev tun0
+    cipher AES-256-CBC
+    auth-nocache
+    ifconfig 192.168.5.2 192.168.5.1
+    secret /etc/openvpn/keys/static.key
+EOF
++++
+
+systemctl enable openvpn-client@tun0
+
+rm -rf /etc/net/ifaces/gre1/ && reboot
+
+sed -i 's/interface gre1/interface tun0/' /etc/frr/frr.conf ; grep tun0 -A6 /etc/frr/frr.conf
+
+systemctl restart frr
+
+ip -br -c a
+ip r
+
+---------Логирование при помощи rsyslog------------
+
+---rsyslog
+
+apt-get install rsyslog -y
+
+vim /etc/rsyslog.d/00_common.conf
+ раскомментировать
+  module(load="imjournal") # ...
+  module(load="imuxsock")  # ...
+
+echo -e "ForwardToSyslog=yes\nMaxLevelSyslog=warning" >> /etc/systemd/journald.conf
+echo "*.warn @192.168.1.10" > /etc/rsyslog.d/10_to_server.conf
+systemctl enable --now rsyslog 
+
+---------NFTables-----------
+
+nft add table filter
+
+nft add chain filter INPUT '{ type filter hook input priority 0; policy drop ; }'
+
+
+nft add rule filter INPUT iif "lo" accept
+nft add rule filter INPUT ct state established,related accept
+nft add rule filter INPUT iif enp7s1 icmp type { echo-request, echo-reply } accept
+nft add rule filter INPUT iif enp7s1 udp dport { 53, 123 } accept
+nft add rule filter INPUT iif enp7s1 tcp dport { 80, 443, 2026, 8080, 53  } accept
+
+nft add chain filter FORWARD '{ type filter hook forward priority 0; policy drop ; }'
+nft add rule filter FORWARD ct state established,related accept
+nft add rule filter FORWARD iif enp7s2 oif enp7s1 accept
+nft add rule filter FORWARD iif enp7s2 oif tun0 accept
+nft add rule filter FORWARD iif enp7s1 oif enp7s2 ct state established,related accept
+		
+nft add chain filter OUTPUT '{ type filter hook output priority 0; policy accept ; }'
+		
+nft list ruleset
+nft list ruleset > /etc/nftables/nftables.nft
+systemctl restart nftables
+nft list ruleset
+		
+---на обоих-----
 
