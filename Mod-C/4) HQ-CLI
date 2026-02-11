@@ -1,1 +1,44 @@
+1)CryptoPro
 
+
+scp root@172.16.1.1:~/ca.crt /etc/pki/ca-trust/source/anchors/
+update-ca-trust extract
+
+apt-get install cryptopro-preinstall
+echo "https://disk.yandex.ru/d/vgZJjOsNfH8szw" > /home/user/link.txt
+
+ в каталоге с распакованной версией – (option копировать корневые сертификаты)
+ ./install_gui.sh
+ 
+---------Настройта принт-сервер cups------------
+https://hq-srv:631
+
+---------prometheus/grafana ---------
+http://hq-srv:9090,
+http://hq-srv:3000, в grafana admin/admin. Меняем пароль на P@ssw0rd 
+import dashboard id:1860
+
+---------Резервное копирование/CyberBackup------------ 
+
+ 
+uname -r
+apt-get update
+apt-get install kernel-source-6.1 kernel-headers-modules-un-def gcc make kmod-sign -y
+update-kernel
+reboot
+uname -r
+mount /dev/sr0 /mnt
+bash /mnt/CyberBackup_18_64-bit.x86_64
+[ ] Management Server          -
+[*] Agent for Linux            0
+[ ] Bootable Media Builder     a
+[ ] Agent for CommuniGate Pro  a
+-----
+[*] Storage Node		       a  
+подключаемся к серверу 
+	hq-srv.au-team.irpo
+	root/toor
+	
+https://hq-srv:9877
+
+остальное в графике, в соответсвии с заданием
