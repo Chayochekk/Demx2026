@@ -59,7 +59,7 @@ systemctl restart frr
 ip -br -c a
 ip r
 
----------Логирование при помощи rsyslog------------
+---------Логирование при помощи rsyslog на обоих RTR------------
 
 ---rsyslog
 
