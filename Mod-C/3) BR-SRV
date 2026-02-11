@@ -69,7 +69,7 @@ ansible-playbook --syntax-check get_hostname_address.yml
 ansible-playbook get_hostname_address.yml
 cat PC-INFO/hq-cli.yml
 
----DNS для HQ-SRV
+--------------DNS для HQ-SRV---------------
 
 samba-tool dns add br-srv.au-team.irpo au-team.irpo mon CNAME hq-srv.au-team.irpo -U Administrator
 samba-tool dns query br-srv.au-team.irpo au-team.irpo mon CNAME -U administrator
