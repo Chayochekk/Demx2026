@@ -1,5 +1,5 @@
 ---------OpenVPN------------
----на HQ-RTR
+----------на HQ-RTR----------------
 apt-get update && apt-get install openvpn -y
 
 openvpn --genkey secret /etc/openvpn/keys/static.key
