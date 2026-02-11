@@ -72,6 +72,7 @@ vim /etc/rsyslog.d/00_common.conf
 
 echo -e "ForwardToSyslog=yes\nMaxLevelSyslog=warning" >> /etc/systemd/journald.conf
 echo "*.warn @192.168.1.10" > /etc/rsyslog.d/10_to_server.conf
+systemctl daemon-reload
 systemctl enable --now rsyslog 
 
 ---------NFTables-----------
