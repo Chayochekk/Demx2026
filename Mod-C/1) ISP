@@ -5,7 +5,7 @@ systemctl restart sshd
 
 ----Установка ПО----------
 
-apt-get install openssl openssl-engines -y
+apt-get update && apt-get install openssl openssl-engines -y
 apt-get install openssl-gost-engine
 control openssl-gost enabled
 
