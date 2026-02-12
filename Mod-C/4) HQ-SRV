@@ -119,7 +119,7 @@ vim /etc/fstab
 apt-get update && apt-get install kernel-source-6.1 kernel-headers-modules-un-def gcc make kmod-sign -y
 update-kernel
 reboot
-uname -r
+uname -r - посмотреть ядро ОС
 создать пользователя irpoadmin/P@ssw0rd
 
 
