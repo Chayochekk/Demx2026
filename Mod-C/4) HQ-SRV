@@ -121,6 +121,8 @@ update-kernel
 reboot
 uname -r - посмотреть ядро ОС
 создать пользователя irpoadmin/P@ssw0rd
+useradd irpoadmin
+passwd irpoadmin
 
 
 ls -l /lib/modules/6.1.159-un-def-alt1/build
