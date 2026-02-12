@@ -16,7 +16,7 @@ Listen 192.168.1.10:631
 https://hq-srv:631
 
 ---------Сервер сбора логов------------ 
---rsyslog
+--------------rsyslog------------------
 
 на всех клиентах включить в /etc/rsyslog.d/00_common.conf
 
@@ -40,10 +40,7 @@ test  всех хостах
 
 logger -p local2.warning "Syslog test message" 
 
----logrotate
-
-
-
+------------logrotate--------------------
 apt-get install logrotate -y
 +++
 cat << EOF > /etc/logrotate.d/rsyslog
@@ -93,7 +90,7 @@ systemctl status prometheus-node_exporter prometheus grafana-server
 
 dashboard 1860
 
----------fail2ban для защиты ssh------------ 
+--------------fail2ban для защиты ssh--------------- 
 
 apt-get install fail2ban python3-module-systemd -y
 
