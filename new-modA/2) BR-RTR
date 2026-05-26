@@ -68,9 +68,6 @@ EOF
 
 +++
 
---------TIMEZONE----------
-timedatectl set-timezone Europe/Moscow
-
 -------настройка net_admin-------------
 useradd net_admin
 echo "net_admin:P@ssw0rd" | chpasswd
