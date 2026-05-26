@@ -16,7 +16,7 @@ echo '172.16.2.2/28' > /etc/net/ifaces/ens18/ipv4address
 echo 'default via 172.16.2.1' > /etc/net/ifaces/ens18/ipv4route
 echo 'nameserver 8.8.8.8' > /etc/net/ifaces/ens18/resolv.conf
 
--------to BR-SRV---
+-------to BR-SRV-------
 echo '192.168.3.1/28' > /etc/net/ifaces/ens19/ipv4address
 
 -------включение маршрутизации---------
