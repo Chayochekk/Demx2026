@@ -9,7 +9,7 @@ systemctl restart chronyd
 
 -------NGINX-----------
 
-apt-get install nginx -y
+apt-get update && apt-get install nginx -y
 ---------------
 cat << "EOF" > /etc/nginx/sites-available.d/r-proxy.conf
 server {
