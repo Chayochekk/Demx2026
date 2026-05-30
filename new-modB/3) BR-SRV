@@ -59,7 +59,7 @@ tail /etc/sudoers
 
 apt-get install ansible sshpass -y
 создать файл конфигурации
-ansible-config init --disabled > ansible.cfg
+ansible-config init --disabled > /etc/ansible/ansible.cfg
 
 изменить и раскомментировать строки
 
