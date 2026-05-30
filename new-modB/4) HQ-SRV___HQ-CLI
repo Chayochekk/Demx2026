@@ -6,11 +6,11 @@ sed -i 's/pool pool.ntp.org iburst/server 172.16.1.1 iburst/' /etc/chrony.conf &
 
 lsblk
 parted /dev/sdb
-	mklabel msdos
-	mkpart primary 1MiB 100%
-	set 1 raid on
-	print
-	select /dev/sdc
+mklabel msdos
+mkpart primary 1MiB 100%
+set 1 raid on
+print
+select /dev/sdc
 
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1
 mdadm --detail --scan >> /etc/mdadm.conf
