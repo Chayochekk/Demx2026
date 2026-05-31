@@ -42,7 +42,7 @@ for i in {1..5}; do samba-tool group addmembers hq hquser$i; done
 samba-tool group listmembers hq
 ===========HQ-CLI==============
 вводим HQ-CLI в домен
-apt-get install task-auth-ad-sssd
+apt-get install task-auth-ad-sssd -y
 
 на HQ-CLI  перезагружаем сеть, проверяем DNS
 вводим в домен
