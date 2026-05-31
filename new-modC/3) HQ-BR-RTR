@@ -4,12 +4,7 @@ apt-get update && apt-get install openvpn -y
 
 openvpn --genkey secret /etc/openvpn/keys/static.key
 chmod og-rw /etc/openvpn/keys/static.key
-
-# scp /etc/openvpn/keys/static.key net_admin@172.16.2.10:~ 
-
-как вариант
-
-cat /etc/openvpn/keys/static.key
+еопируем ключ из /etc/openvpn/keys/static.key и вставляем его в такой же файл на br-rtr
 
 ----------------------------------------
 cat << EOF > /etc/openvpn/server/tun0.conf
