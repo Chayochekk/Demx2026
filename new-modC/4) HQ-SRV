@@ -23,15 +23,16 @@ https://hq-srv:631
 
 	module(load="imjournal")
 	module(load="imuxsock")
+После изменения пререзагрузить rsyslog
 
 apt-get install rsyslog-classic rsyslog-server-listen -y
-
+---------------------------------------------------------
 cat << "EOF" > /etc/rsyslog.d/91_template.conf
 $template DynFile,"/opt/%HOSTNAME%/%PROGRAMNAME%.log" 
 *.*       ?DynFile 
 &         stop
 EOF
-
+---------------------------------------------------------
 systemctl restart rsyslogd
 ss -lunp4 | grep 514
 
