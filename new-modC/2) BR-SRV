@@ -3,6 +3,7 @@
 mount -o loop /dev/sr0 /mnt/ -v
 ls -l /mnt/
 iconv -f UTF-8 -t UTF-8//IGNORE /mnt/Users.csv > /root/users_fix.csv
+-------------------------------
 cat << "EOF" > import.sh
 #!/bin/bash 
 #
@@ -14,7 +15,7 @@ surname="$name" --job-title="$role" --telephone-number="$phone"
     [[ -n "$ou" ]] && samba-tool user move "${username,,}" "OU=$ou" 2>/dev/null 
 done < users_fix.csv 
 EOF
-
+----------------------------
 bash import.sh
 samba-tool user list
 samba-tool user show ball.y
