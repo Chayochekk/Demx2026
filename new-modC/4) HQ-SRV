@@ -92,7 +92,11 @@ systemctl enable --now prometheus
 systemctl enable --now grafana-server 
 systemctl status prometheus-node_exporter prometheus grafana-server 
 
-dashboard 1860
+Заходим на HQ-CLI и переходим по адрессу hq-srv.au-team.irpo:3000
+Сток пароль и логин admin
+Меняем на P@ssw0rd
+Переходим в connections и добавляем Prometheus
+Переходим в dashboard и добавляем борду 1860
 
 ---------fail2ban для защиты ssh------------ 
 
@@ -117,7 +121,7 @@ systemctl enable --now fail2ban
 fail2ban-client status sshd
 
 ---------Резервное копирование/CyberBackup------------ 
----HQ-SRV
+--------------HQ-SRV-------------------
 vim /etc/fstab
 
 apt-get update && apt-get install kernel-source-6.12 kernel-headers-modules-6.12 gcc make kmod-sign -y
