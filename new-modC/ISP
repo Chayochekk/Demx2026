@@ -80,4 +80,6 @@ location / {
 } 
 ------------------------------------------------
 nginx -t
-systemctl reload nginx 
+systemctl reload nginx
+
+Переходим на HQ-CLI
