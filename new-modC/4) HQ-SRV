@@ -80,7 +80,7 @@ apt-get install prometheus grafana  prometheus-node_exporter -y
 	добавить
 	
  - job_name: hq-srv
-    static_configs:
+   static_configs:
       - targets: ['192.168.1.10:9100']
   - job_name: br-srv
     static_configs:
