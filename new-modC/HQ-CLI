@@ -4,7 +4,7 @@
 scp root@172.16.1.1:~/ca.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
 
-apt-get install cryptopro-preinstall
+apt-get install cryptopro-preinstall -y
 echo "https://disk.yandex.ru/d/thYseYC6qhQ4Lg" > /home/user/link.txt
 
  в каталоге с распакованной версией – (option копировать корневые сертификаты)
