@@ -46,7 +46,7 @@ logger -p local2.warning "Syslog test message"   - делаем на клиен�
 
 
 apt-get install logrotate -y
-+++
+---------------------------------------
 cat << EOF > /etc/logrotate.d/rsyslog
 /opt/**/*.log
 { 
@@ -57,7 +57,7 @@ compress
 minsize 10M
 } 
 EOF
-+++
+---------------------------------------
 
    проверка
 logrotate -d /etc/logrotate.d/rsyslog
