@@ -48,7 +48,7 @@ cp /mnt/playbook/get_hostname_address.yml /etc/ansible/
 cd /etc/ansible/
 
 mkdir PC-INFO
-+++	
+==========================================
 cat << "EOF" > 	get_hostname_address.yml
 ---
 - name: "Get data from hosts"
@@ -65,7 +65,7 @@ cat << "EOF" > 	get_hostname_address.yml
           IP_Address: {{ ansible_default_ipv4.address }}
       delegate_to: localhost
 EOF
-+++
+===========================================
 ansible-playbook --syntax-check get_hostname_address.yml
 ansible-playbook get_hostname_address.yml
 cat PC-INFO/hq-cli.yml
