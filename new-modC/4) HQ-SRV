@@ -38,9 +38,8 @@ ss -lunp4 | grep 514
 
 на сервере выключить в /etc/rsyslog.d/10_classic.conf 
 	module(load="imuxsock") ---> #
-test  всех хостах
 
-logger -p local2.warning "Syslog test message" 
+logger -p local2.warning "Syslog test message"   - делаем на клиентах 
 
 ----------------logrotate---------------
 
