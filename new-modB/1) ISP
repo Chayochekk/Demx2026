@@ -54,10 +54,4 @@ apt-get install apache2-htpasswd -y
 htpasswd -c /etc/nginx/.htpasswd WEB
 cat /etc/nginx/.htpasswd
 
-добавить в файл, в сайт  web.au-team.irpo после блока proxy строки 
-
-auth_basic "Restricted Access";
-auth_basic_user_file /etc/nginx/.htpasswd;
-
-nginx -t
 systemctl restart nginx
