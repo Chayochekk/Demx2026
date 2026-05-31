@@ -10,7 +10,7 @@ Listen 192.168.1.10:631
 	Allow all
 
   systemctl enable --now cups
-  ss -ltnp4 | grep 631
+  ss -ltnp4 | grep 631     #Если у вас так же 127.0.0.1:631 то перезагрузите службу 
   
 --------------на HQ-CLI-------------
 https://hq-srv:631
