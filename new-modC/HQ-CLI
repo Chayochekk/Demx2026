@@ -29,25 +29,3 @@ https://hq-srv:631
 http://hq-srv:9090,
 http://hq-srv:3000, в grafana admin/admin. Меняем пароль на P@ssw0rd 
 import dashboard id:1860
-
----------Резервное копирование/CyberBackup------------ 
-
- 
-apt-get update
-apt-get install kernel-source-6.1 kernel-headers-modules-un-def gcc make kmod-sign -y
-uname -r
-mount /dev/sr0 /mnt
-bash /mnt/CyberBackup_18_64-bit.x86_64
-[ ] Management Server          -
-[*] Agent for Linux            0
-[ ] Bootable Media Builder     a
-[ ] Agent for CommuniGate Pro  a
------
-[*] Storage Node		       a  
-подключаемся к серверу 
-	hq-srv.au-team.irpo
-	root/toor
-	
-https://hq-srv:9877
-
-остальное в графике, в соответсвии с заданием
