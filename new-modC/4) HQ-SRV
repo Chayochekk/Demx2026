@@ -125,11 +125,14 @@ fail2ban-client status sshd
 vim /etc/fstab
 
 apt-get update && apt-get install kernel-source-6.12 kernel-headers-modules-6.12 gcc make kmod-sign -y
-
+#kernel update в случае если ядро устарело
 ls -l /lib/modules/6.12.85-6.12-alt1/
 
-создать пользователя irpoadmin/P@ssw0rd
 
+создаем пользователя 
+useradd irpoadmin
+passwd irpoadmin
+пароль P@ssw0rd
 
 ls -l /lib/modules/6.1.159-un-def-alt1/build
 mkdir cyber 
@@ -146,7 +149,7 @@ ss -ltnp | grep 9877
 
 ---------------HQ-CLI-------------------
 apt-get install kernel-source-6.12 kernel-headers-modules-6.12 gcc make kmod-sign -y
-
+#kernel update в случае если ядро устарело
 uname -r
 
 mount /dev/sr0 /mnt
