@@ -56,7 +56,7 @@ ip r
 ---------Логирование при помощи rsyslog------------
 
 ----------------rsyslog------------------------------
-
+На обоих RTR
 apt-get install rsyslog -y
 
 grep 'Syslog' /usr/lib/systemd/journald.conf 
@@ -69,3 +69,4 @@ vim /etc/rsyslog.d/00_common.conf
 echo -e "ForwardToSyslog=yes\nMaxLevelSyslog=warning" >> /usr/lib/systemd/journald.conf
 echo "*.warn @192.168.1.10" > /etc/rsyslog.d/10_to_server.conf
 systemctl enable --now rsyslog 
+reboot
