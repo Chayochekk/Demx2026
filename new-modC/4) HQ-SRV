@@ -13,12 +13,13 @@ Listen 192.168.1.10:631
   ss -ltnp4 | grep 631     #Если у вас так же 127.0.0.1:631 то перезагрузите службу 
   
 --------------на HQ-CLI-------------
+Заходим в настройки принтера
 https://hq-srv:631
 
 ---------Сервер сбора логов------------ 
 ------------rsyslog------------------
 
-на всех клиентах включить в /etc/rsyslog.d/00_common.conf
+на BR-SRV, BR-RTR, HQ-RTR раскоментировать в /etc/rsyslog.d/00_common.conf
 
 	module(load="imjournal")
 	module(load="imuxsock")
