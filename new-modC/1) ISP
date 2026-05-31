@@ -42,10 +42,6 @@ openssl x509 -req -in docker.au-team.irpo.csr \
  -CA ca.crt -CAkey ca.key -CAcreateserial \
  -out docker.au-team.irpo.crt -days 30
 
-openssl engine
-openssl ciphers | tr ':' '\n' | grep GOST
-
-
 ------------------------------------------
 /etc/nginx/sites-available.d/r-proxy.conf
 
