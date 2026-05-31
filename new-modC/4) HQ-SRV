@@ -2,13 +2,13 @@
 
 apt-get update && apt-get install cups cups-pdf -y
 vim /etc/cups/cupsd.conf 
+# Only listen for connections from the local machine.
+Listen 192.168.1.10:631
 <Location /> 
 <Location /admin> 
 <Location /admin/conf>
 	Allow all
-# Only listen for connections from the local machine.
-Listen 192.168.1.10:631
-  
+
   systemctl enable --now cups
   ss -ltnp4 | grep 631
   
