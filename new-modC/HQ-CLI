@@ -3,10 +3,8 @@
 
 scp root@172.16.1.1:~/ca.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
-
 apt-get install cryptopro-preinstall -y
-Заходим на оф сайт cryptorpo и скачиваем архив
-Создаем папку с любым именем и распоковываем архив
+echo "https://disk.yandex.ru/d/thYseYC6qhQ4Lg" > /home/user/link.txt
 Скачиваем:
 * Криптопровайдер КС1
 * Графические диалоги
