@@ -59,8 +59,6 @@ ip r
 На обоих RTR
 apt-get install rsyslog -y
 
-grep 'Syslog' /usr/lib/systemd/journald.conf 
-
 vim /etc/rsyslog.d/00_common.conf
  раскомментировать
   module(load="imjournal") # ...
