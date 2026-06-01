@@ -5,6 +5,8 @@ scp root@172.16.1.1:~/ca.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
 apt-get install cryptopro-preinstall -y
 echo "https://disk.yandex.ru/d/thYseYC6qhQ4Lg" > /home/user/link.txt
+Выдаем права на исполняемость install_gui.sh
+запускаем скрипт ./install_gui.sh 
 Скачиваем:
 * Криптопровайдер КС1
 * Графические диалоги
@@ -12,8 +14,6 @@ echo "https://disk.yandex.ru/d/thYseYC6qhQ4Lg" > /home/user/link.txt
 * Браузерный плагин + CAdEs
 * Импортировать корневые сертивфикаты из ОС
  в каталоге с распакованной версией – (option копировать корневые сертификаты)
-Выдаем права на исполняемость install_gui.sh
-запускаем скрипт ./install_gui.sh 
 Заходит в графике в cryptopro
 переходим в сертификаты
 устанавливаем наш сертификат ca.crt
