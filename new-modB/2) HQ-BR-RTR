@@ -2,8 +2,8 @@
 
 
 nft add chain nat prerouting { type nat hook prerouting priority dstnat \; }
-nft add rule nat prerouting iif "ens18" tcp dport 2026 dnat to 192.168.1.10
-nft add rule nat prerouting iif "ens18" tcp dport 8080 dnat to 192.168.1.10:80
+nft add rule nat prerouting iif "ens18" tcp dport 2013 dnat to 192.168.1.10
+nft add rule nat prerouting iif "ens18" tcp dport 8083 dnat to 192.168.1.10:80
 
 
 nft list ruleset
@@ -15,7 +15,7 @@ nft list ruleset
 
 
 nft add chain nat prerouting { type nat hook prerouting priority dstnat \; }
-nft add rule nat prerouting iif "ens18" tcp dport { 8080, 2026 } dnat to 192.168.3.10
+nft add rule nat prerouting iif "ens18" tcp dport { 8083, 2013 } dnat to 192.168.3.10
 
 nft list ruleset
 nft list ruleset > /etc/nftables/nftables.nft
