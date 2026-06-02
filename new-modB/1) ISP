@@ -51,7 +51,7 @@ systemctl status nginx
 -------HTTP Basic Auth-----------
 
 apt-get install apache2-htpasswd -y
-htpasswd -c /etc/nginx/.htpasswd WEB
+htpasswd -c /etc/nginx/.htpasswd Kazimirс
 cat /etc/nginx/.htpasswd
 
 systemctl restart nginx
