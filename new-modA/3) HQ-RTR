@@ -79,7 +79,7 @@ EOF
 systemctl enable --now nftables
 
 -------настройка net_admin-------------
-useradd net_admin
+useradd -u 2026 net_admin
 echo "net_admin:P@ssw0rd" | chpasswd
 usermod -aG wheel net_admin
 echo "WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/net_admin
