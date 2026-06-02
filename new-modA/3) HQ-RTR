@@ -7,7 +7,7 @@ exec bash
 
 +++++++++++NETWORK++++++++++++++++++++++++
 
-mkdir -p /etc/net/ifaces/{ens19,vlan{100,200,999},gre1}
+mkdir -p /etc/net/ifaces/{ens19,vlan{113,213,813},gre1}
 echo 'TYPE=eth' | tee /etc/net/ifaces/ens{18,19}/options
 
 
@@ -18,13 +18,13 @@ echo 'nameserver 8.8.8.8' > /etc/net/ifaces/ens18/resolv.conf
 
 --------настройка VLAN-----------
 
-echo $'100\n200\n999' | xargs -i bash -c 'echo -e "TYPE=vlan\nHOST=ens19\nVID={}" > /etc/net/ifaces/vlan{}/options'
+echo $'113\n213\n813' | xargs -i bash -c 'echo -e "TYPE=vlan\nHOST=ens19\nVID={}" > /etc/net/ifaces/vlan{}/options'
 
 cat /etc/net/ifaces/vlan999/options 
 
-echo '192.168.100.1/27' > /etc/net/ifaces/vlan100/ipv4address
-echo '192.168.200.1/28' > /etc/net/ifaces/vlan200/ipv4address
-echo '192.168.99.1/29' > /etc/net/ifaces/vlan999/ipv4address
+echo '192.168.113.1/27' > /etc/net/ifaces/vlan113/ipv4address
+echo '192.168.213.1/28' > /etc/net/ifaces/vlan213/ipv4address
+echo '192.168.83.1/29' > /etc/net/ifaces/vlan9813/ipv4address
 -------включение маршрутизации---------
 
 sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
