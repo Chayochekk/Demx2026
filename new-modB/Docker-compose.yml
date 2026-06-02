@@ -7,8 +7,8 @@ services:
     ports: 
       - "3306:3306"
     environment:
-      MARIADB_DATABASE: testdb
-      MARIADB_USER: test
+      MARIADB_DATABASE: testdb3
+      MARIADB_USER: test3
       MARIADB_PASSWORD: P@ssw0rd
       MARIADB_ROOT_PASSWORD: P@ssw0rd
     volumes:
@@ -19,12 +19,12 @@ services:
     image: site:latest
     restart: always
     ports: 
-      - "8080:8000"
+      - "8083:8000"
     environment: 
       DB_HOST: database
       DB_PORT: 3306
-      DB_NAME: testdb
-      DB_USER: test
+      DB_NAME: testdb3
+      DB_USER: test3
       DB_PASS: P@ssw0rd
       DB_TYPE: maria
     depends_on: 
