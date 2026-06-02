@@ -14,7 +14,7 @@ ping hq-srv -c 3
 
 -------настройка sshuser-------------
 
-useradd -u 2026 sshuser
+useradd -u 2013 sshuser
 echo "sshuser:P@ssw0rd" | chpasswd
 usermod -aG wheel sshuser
 echo "WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/sshuser
@@ -24,14 +24,14 @@ sudo id
 --------настройка SSH----------------
 
 echo "Authorized access only" > /etc/openssh/banner
-echo -e "Port 2026\nMaxAuthTries 2\nAllowUsers sshuser\nBanner /etc/openssh/banner\n" >> /etc/openssh/sshd_config
+echo -e "Port 2013\nMaxAuthTries 2\nAllowUsers sshuser\nBanner /etc/openssh/banner\n" >> /etc/openssh/sshd_config
 systemctl restart sshd
 ss -ltnp | grep sshd 
 
 
 ==========HQ-CLI==========
 
-СТАВИМ ТЕГ VLAN 200 НА ИНТЕРФЕЙС 
+СТАВИМ ТЕГ VLAN 213 НА ИНТЕРФЕЙС 
 
 -------имя хоста/NTP---------
 hostnamectl hostname hq-cli.au-team.irpo
