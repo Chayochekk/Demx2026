@@ -36,11 +36,11 @@ Common Name ( DOCKER.AU-TEAM.IRPO )
 
 openssl x509 -req -in web.au-team.irpo.csr \
  -CA ca.crt -CAkey ca.key -CAcreateserial \
- -out web.au-team.irpo.crt -days 30
+ -out web.au-team.irpo.crt -days 33
 
 openssl x509 -req -in docker.au-team.irpo.csr \
  -CA ca.crt -CAkey ca.key -CAcreateserial \
- -out docker.au-team.irpo.crt -days 30
+ -out docker.au-team.irpo.crt -days 33
 
 ------------------------------------------
 /etc/nginx/sites-available.d/r-proxy.conf
