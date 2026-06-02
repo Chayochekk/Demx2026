@@ -61,7 +61,7 @@ mariadb -e "USE webdb; SHOW TABLES;"
 
 vim /var/www/html/index.php
 	$servername = "localhost";
-	$username = "web";
+	$username = "web3";
 	$password = "P@ssw0rd";
 	$dbname = "webdb";
 
