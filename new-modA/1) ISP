@@ -13,8 +13,8 @@ mkdir -p /etc/net/ifaces/ens{19,20}
 
 echo 'TYPE=eth' | tee /etc/net/ifaces/ens{19,20}/options
 
-echo '172.16.1.1/28' > /etc/net/ifaces/ens19/ipv4address
-echo '172.16.2.1/28' > /etc/net/ifaces/ens20/ipv4address
+echo '172.16.50.1/28' > /etc/net/ifaces/ens19/ipv4address
+echo '172.16.60.1/28' > /etc/net/ifaces/ens20/ipv4address
 
 
 -------настройка NAT---------
