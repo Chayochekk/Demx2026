@@ -35,8 +35,8 @@ sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
 cat << EOF > /etc/net/ifaces/gre1/options
 TYPE=iptun
 TUNTYPE=gre
-TUNLOCAL=172.16.1.2
-TUNREMOTE=172.16.2.2
+TUNLOCAL=172.16.50.2
+TUNREMOTE=172.16.60.2
 TUNOPTIONS='ttl 64'
 
 EOF
