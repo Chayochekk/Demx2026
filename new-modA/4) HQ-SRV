@@ -1,7 +1,7 @@
 
 ==========HQ-SRV==========
 
-СТАВИМ ТЕГ VLAN 100 НА ИНТЕРФЕЙС 
+СТАВИМ ТЕГ VLAN 113 НА ИНТЕРФЕЙС 
 
 -------имя хоста/NTP---------
 hostnamectl hostname hq-srv.au-team.irpo
@@ -9,15 +9,15 @@ hostnamectl hostname hq-srv.au-team.irpo
 -------настройка интерфейсов-------------
 
 echo 'TYPE=eth' > /etc/net/ifaces/ens18/options
-echo '192.168.100.2/27' > /etc/net/ifaces/ens18/ipv4address
-echo 'default via 192.168.100.1' > /etc/net/ifaces/ens18/ipv4route
+echo '192.168.113.2/27' > /etc/net/ifaces/ens18/ipv4address
+echo 'default via 192.168.113.1' > /etc/net/ifaces/ens18/ipv4route
 echo 'nameserver 8.8.8.8' > /etc/net/ifaces/ens18/resolv.conf
 systemctl restart network
 ping zz.ru -c3
 
 -------настройка sshuser-------------
 
-useradd -u 2026 sshuser
+useradd -u 2013 sshuser
 echo "sshuser:P@ssw0rd" | chpasswd
 usermod -aG wheel sshuser
 echo "WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/sshuser
@@ -27,11 +27,11 @@ sudo id
 --------настройка SSH----------------
 
 echo "Authorized access only" > /etc/openssh/banner
-echo -e "Port 2026\nMaxAuthTries 2\nAllowUsers sshuser\nBanner /etc/openssh/banner\n" >> /etc/openssh/sshd_config
+echo -e "Port 2013\nMaxAuthTries 2\nAllowUsers sshuser\nBanner /etc/openssh/banner\n" >> /etc/openssh/sshd_config
 systemctl restart sshd
 ss -ltnp | grep sshd 
 
-ssh sshuser@127.0.0.1 -p 2026
+ssh sshuser@127.0.0.1 -p 2013
 
 -------установка необходимого ПО-------
 
