@@ -24,7 +24,7 @@ cat /etc/net/ifaces/vlan999/options
 
 echo '192.168.113.1/27' > /etc/net/ifaces/vlan113/ipv4address
 echo '192.168.213.1/28' > /etc/net/ifaces/vlan213/ipv4address
-echo '192.168.83.1/29' > /etc/net/ifaces/vlan9813/ipv4address
+echo '192.168.83.1/29' > /etc/net/ifaces/vlan813/ipv4address
 -------включение маршрутизации---------
 
 sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/' /etc/net/sysctl.conf
@@ -57,7 +57,7 @@ apt-get install frr dnsmasq nftables -y
 
 --------смена DNS-----------
 rm -f /etc/net/ifaces/ens18/resolv.conf
-echo $'search au-team.irpo\nnameserver 192.168.100.2' > /etc/net/ifaces/vlan100/resolv.conf
+echo $'search au-team.irpo\nnameserver 192.168.113.2' > /etc/net/ifaces/vlan100/resolv.conf
 
 --------NAT-----------------
 
