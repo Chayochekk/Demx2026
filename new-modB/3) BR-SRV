@@ -26,8 +26,8 @@ echo $'search au-team.irpo\nnameserver 127.0.0.1' > /etc/net/ifaces/ens18/resolv
 samba-tool dns add br-srv.au-team.irpo au-team.irpo hq-srv A 192.168.1.10 -U Administrator
 samba-tool dns add br-srv.au-team.irpo au-team.irpo hq-rtr A 192.168.1.1 -U Administrator
 samba-tool dns add br-srv.au-team.irpo au-team.irpo br-rtr A 192.168.3.1 -U Administrator
-samba-tool dns add br-srv.au-team.irpo au-team.irpo web.au-team.irpo A 172.16.1.1 -U Administrator
-samba-tool dns add br-srv.au-team.irpo au-team.irpo docker.au-team.irpo A 172.16.2.1 -U Administrator
+samba-tool dns add br-srv.au-team.irpo au-team.irpo web.au-team.irpo A 172.16.50.1 -U Administrator
+samba-tool dns add br-srv.au-team.irpo au-team.irpo docker.au-team.irpo A 172.16.60.1 -U Administrator
 
 
 samba-tool dns query br-srv.au-team.irpo au-team.irpo @ ALL -U administrator
