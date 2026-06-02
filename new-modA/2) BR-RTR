@@ -50,7 +50,7 @@ apt-get install frr -y
 
 --------смена DNS-----------
 rm -f /etc/net/ifaces/ens18/resolv.conf
-echo $'search au-team.irpo\nnameserver 192.168.100.2' > /etc/net/ifaces/ens18/resolv.conf
+echo $'search au-team.irpo\nnameserver 192.168.113.2' > /etc/net/ifaces/ens18/resolv.conf
 --------NAT-----------------
 
 -------nftables.nft
