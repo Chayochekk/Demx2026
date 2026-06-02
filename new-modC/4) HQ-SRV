@@ -113,7 +113,7 @@ port = 2026
 filter = sshd
 backend = systemd
 maxretry = 3
-bantime = 1m
+bantime = 4m
 EOF
 +++
 
